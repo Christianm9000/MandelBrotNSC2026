@@ -5,6 +5,8 @@ Course : Numerical Scientific Computing 2026
 """
 
 import numpy as np
+import time
+import matplotlib.pyplot as plt
 
 def mandelbrot_point(complex_input: complex, max_iterations: int = 1000):
     """
@@ -45,7 +47,7 @@ def compute_mandelbrot(x_space, y_space, resolution):
     y = np.linspace(y_space[0], y_space[1], resolution) # Imaginary axis values
     X, Y = np.meshgrid(x, y)
 
-    complex_grid = X + 1j * Y
+    complex_grid = X + 1j * Y # Create a grid of complex numbers from [0,0] to [resolution-1,resolution-1]
 
     # Initialize a 2D array to store the iteration counts
     iteration_counts = np.zeros(complex_grid.shape, dtype=int)
@@ -53,21 +55,43 @@ def compute_mandelbrot(x_space, y_space, resolution):
     for i in range(resolution):
         for j in range(resolution):
             complex_input = complex_grid[i, j]
-            iteration_count = mandelbrot_point(complex_input)
+            iteration_count = mandelbrot_point(complex_input, max_iterations)
 
             # Store the iteration count in a 2D array
             iteration_counts[i, j] = iteration_count
 
     return iteration_counts
 
+def visualize_mandelbrot(iteration_counts, x_space, y_space):
+    """
+    Docstring for visualize_mandelbrot
+
+    Description:
+    - Takes the 2D array of iteration counts and visualizes it
+    - Displays the resulting image of the Mandelbrot set
+    """
+
+    plt.imshow(iteration_counts, extent=(x_space[0], x_space[1], y_space[0], y_space[1]), cmap='hot')
+    plt.colorbar()
+    plt.title('Mandelbrot Set')
+    plt.xlabel('Real Axis')
+    plt.ylabel('Imaginary Axis')
+    plt.show()
 
 if __name__ == "__main__":
     x_space = [-2.0, 1.0] # Real axis range
     y_space = [-1.5, 1.5] # Imaginary axis range
-    resolution = 5 # Number of points along each axis
-    max_iterations = 1000 # Maximum number of iterations to determine if a point escapes
+    resolution = 1024 # Number of points along each axis
+    max_iterations = 100 # Maximum number of iterations to determine if a point escapes
 
     test_number = 1.5 + -0.2j # Example complex number for testing
     print(f"Iteration count for {test_number}: {mandelbrot_point(test_number)}")
 
-    print(compute_mandelbrot(x_space, y_space, resolution))
+    start_time = time.time()
+    iteration_counts = compute_mandelbrot(x_space, y_space, resolution)
+    print(f"Iteration counts array {iteration_counts}")
+    end_time = time.time()
+    print(f"Computation time: {end_time - start_time} seconds")
+
+    # Visualize the Mandelbrot set
+    visualize_mandelbrot(iteration_counts, x_space, y_space)
