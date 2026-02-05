@@ -1,5 +1,0 @@
-# Create a grid of complex numbers representing the points in the complex plane
-x = np.linspace(x_space[0], x_space[1], resolution) # Real axis values
-y = np.linspace(y_space[0], y_space[1], resolution) # Imaginary axis values
-X, Y = np.meshgrid(x, y)
-complex_grid = X + 1j * Y
