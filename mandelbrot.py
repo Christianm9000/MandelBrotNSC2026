@@ -20,25 +20,6 @@ def benchmark ( func , * args , n_runs =3) :
     print(f" Median : {median_t:.4f}s " f"( min ={ min( times ):.4f}, max ={ max( times ):.4f})")
     return median_t, result
 
-def mandelbrot_point(complex_input: complex, max_iterations: int):
-    """
-    Docstring for mandelbrot_point
-
-    Description:
-    - Takes a single complex number c
-    - returns iteration count
-    - test with known points (e.g., c=0 should be max_iterations)
-    """
-    # Initialize z to 0
-    z_0 = 0 + 0j
-
-    for iteration in range(max_iterations):
-        if abs(z_0) > 2:
-            return iteration
-        z_0 = z_0**2 + complex_input
-
-    # Return the max iteartion count if the point does not escape
-    return max_iterations
 
 def compute_mandelbrot(x_space, y_space, resolution, max_iterations):
     """
@@ -63,14 +44,13 @@ def compute_mandelbrot(x_space, y_space, resolution, max_iterations):
 
     # Initialize a 2D array to store the iteration counts
     iteration_counts = np.zeros(complex_grid.shape, dtype=int)
+    Z = np.zeros_like(complex_grid) # Initialize Z to be the same shape as complex_grid
 
-    for i in range(resolution):
-        for j in range(resolution):
-            complex_input = complex_grid[i, j]
-            iteration_count = mandelbrot_point(complex_input, max_iterations)
-
-            # Store the iteration count in a 2D array
-            iteration_counts[i, j] = iteration_count
+    #replace the nested loops with vectorized operations
+    for iteration in range(max_iterations):
+        mask = np.abs(Z) <= 2 # create a mask for points that have not escaped. This is a bool mask.
+        Z[mask] = Z[mask]**2 + complex_grid[mask] # UPdate Z for points that have not escaped
+        iteration_counts[mask] = iteration # update the iteration count for points that have not escaped
 
     return iteration_counts
 
@@ -97,10 +77,10 @@ if __name__ == "__main__":
     max_iterations = 100 # Maximum number of iterations to determine if a point escapes
     test_number = 1.5 + -0.2j # Example complex number for testing
 
-    t , M = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
+    t , iteration_counts = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
 
     #iteration_counts = compute_mandelbrot(x_space, y_space, resolution, max_iterations)
     #print(f"Iteration counts array {iteration_counts}")
 
     # Visualize the Mandelbrot set
-    visualize_mandelbrot(M, x_space, y_space)
+    visualize_mandelbrot(iteration_counts, x_space, y_space)
