@@ -5,10 +5,22 @@ Course : Numerical Scientific Computing 2026
 """
 
 import numpy as np
-import time
+import time, statistics
 import matplotlib.pyplot as plt
 
-def mandelbrot_point(complex_input: complex, max_iterations: int = 1000):
+def benchmark ( func , * args , n_runs =3) :
+    """ Time func , return median of n_runs . """
+    times = []
+    for _ in range(n_runs):
+        t0 = time.perf_counter()
+        result = func(*args)
+        times.append(time.perf_counter() - t0)
+    median_t = statistics.median(times)
+    
+    print(f" Median : {median_t:.4f}s " f"( min ={ min( times ):.4f}, max ={ max( times ):.4f})")
+    return median_t, result
+
+def mandelbrot_point(complex_input: complex, max_iterations: int):
     """
     Docstring for mandelbrot_point
 
@@ -28,7 +40,7 @@ def mandelbrot_point(complex_input: complex, max_iterations: int = 1000):
     # Return the max iteartion count if the point does not escape
     return max_iterations
 
-def compute_mandelbrot(x_space, y_space, resolution):
+def compute_mandelbrot(x_space, y_space, resolution, max_iterations):
     """
     Docstring for compute_mandelbrot
     
@@ -83,15 +95,12 @@ if __name__ == "__main__":
     y_space = [-1.5, 1.5] # Imaginary axis range
     resolution = 1024 # Number of points along each axis
     max_iterations = 100 # Maximum number of iterations to determine if a point escapes
-
     test_number = 1.5 + -0.2j # Example complex number for testing
-    print(f"Iteration count for {test_number}: {mandelbrot_point(test_number)}")
 
-    start_time = time.time()
-    iteration_counts = compute_mandelbrot(x_space, y_space, resolution)
-    print(f"Iteration counts array {iteration_counts}")
-    end_time = time.time()
-    print(f"Computation time: {end_time - start_time} seconds")
+    t , M = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
+
+    #iteration_counts = compute_mandelbrot(x_space, y_space, resolution, max_iterations)
+    #print(f"Iteration counts array {iteration_counts}")
 
     # Visualize the Mandelbrot set
-    visualize_mandelbrot(iteration_counts, x_space, y_space)
+    visualize_mandelbrot(M, x_space, y_space)
