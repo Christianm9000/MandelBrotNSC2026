@@ -70,17 +70,43 @@ def visualize_mandelbrot(iteration_counts, x_space, y_space):
     plt.ylabel('Imaginary Axis')
     plt.show()
 
+def runtime_scaling_test(x_space, y_space, max_iterations, test_space):
+    """
+    Docstring for runtime_scaling_test
+
+    Description:
+    - Tests the runtime of the compute_mandelbrot function for different resolutions
+    - Plots the runtime against the resolution to analyze scaling behavior
+    """
+
+    runtimes = []
+    for resolution in test_space:
+        t, _ = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
+        runtimes.append(t)
+
+    #plot runtime against resolution
+    plt.plot(test_space, runtimes, marker='o')
+    plt.xlabel('Resolution (number of points along each axis)')
+    plt.ylabel('Runtime (seconds)')
+    plt.title('Runtime Scaling of Mandelbrot Set Computation')
+    plt.grid(True)
+    plt.show()
+
 if __name__ == "__main__":
     x_space = [-2.0, 1.0] # Real axis range
     y_space = [-1.5, 1.5] # Imaginary axis range
     resolution = 1024 # Number of points along each axis
     max_iterations = 100 # Maximum number of iterations to determine if a point escapes
     test_number = 1.5 + -0.2j # Example complex number for testing
+    test_space = [256, 512, 1024, 2048, 4096] # Different resolutions to test
 
-    t , iteration_counts = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
+    #t , iteration_counts = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
 
     #iteration_counts = compute_mandelbrot(x_space, y_space, resolution, max_iterations)
     #print(f"Iteration counts array {iteration_counts}")
 
     # Visualize the Mandelbrot set
-    visualize_mandelbrot(iteration_counts, x_space, y_space)
+    #visualize_mandelbrot(iteration_counts, x_space, y_space)
+
+    # Test runtime scaling
+    runtime_scaling_test(x_space, y_space, max_iterations, test_space)
