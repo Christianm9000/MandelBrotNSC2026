@@ -1,4 +1,4 @@
-# cProfile Measurements
+# cProfile Measurements (Milestone 1)
 ## cProfile Naive Solution
 ```bash
 Thu Feb 26 14:15:34 2026    naive_profile.prof
@@ -53,7 +53,7 @@ There weren't any suprising results for the vectorized/numpy implementation, mos
 **How does the Numpy compare to the naive:**\
 The Numpy implementation is way faster than the naive one, and performs way less function calls which probably also eliminates some overhead.
 
-# Deep Profiling
+# Deep Profiling (Milestone 2)
 ## Results
 ```bash
 Wrote profile results to 'mandelbrot_naive.py.lprof'
@@ -143,4 +143,8 @@ The NumPy version is specifically faster because it takes a vectorized approach.
 You would need to change the inner loop function to run more optimized. As it dominates ~96% of the naive run-time, specifically the threshold check and calculation of the next complex number in the iteration.
 ---- Help
 
-
+# Numba njit (Milestone 3)
+- Naive approach: 4.0889 seconds : 0 Speedup
+- NumPy/vectorized: 0.9811 seconds : 4.168 Speedup
+- Numba njit hybrid: 0.428 seconds : 2.29 Speedup
+- Numba njit fully: 0.062 seconds : 15.8 Speedup
