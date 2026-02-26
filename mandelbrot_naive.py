@@ -39,7 +39,7 @@ def mandelbrot_point(complex_input: complex, max_iterations: int = 1000):
     # Return the max iteartion count if the point does not escape
     return max_iterations
 
-def compute_mandelbrot(x_space, y_space, resolution):
+def compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations):
     """
     x_space: Describes the range of the real axis (e.g., [-2.0, 1.0])
     y_space: Describes the range of the imaginary axis (e.g., [-1.5, 1.5])
@@ -92,10 +92,10 @@ if __name__ == "__main__":
     max_iterations = 100 # Maximum number of iterations to determine if a point escapes
 
     test_number = 1.5 + -0.2j # Example complex number for testing
-    print(f"Iteration count for {test_number}: {mandelbrot_point(test_number)}")
+    print(f"Iteration count for {test_number}: {mandelbrot_point(test_number, max_iterations)}")
 
     start_time = time.time()
-    iteration_counts = compute_mandelbrot(x_space, y_space, resolution)
+    iteration_counts = compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations)
     print(f"Iteration counts array {iteration_counts}")
     end_time = time.time()
     print(f"Computation time: {end_time - start_time} seconds")

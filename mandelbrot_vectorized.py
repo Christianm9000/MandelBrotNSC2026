@@ -21,7 +21,7 @@ def benchmark ( func , * args , n_runs =3) :
     return median_t, result
 
 
-def compute_mandelbrot(x_space, y_space, resolution, max_iterations):
+def compute_mandelbrot_vectorized(x_space, y_space, resolution, max_iterations):
     """
     Docstring for compute_mandelbrot
     
@@ -81,7 +81,7 @@ def runtime_scaling_test(x_space, y_space, max_iterations, test_space):
 
     runtimes = []
     for resolution in test_space:
-        t, _ = benchmark(compute_mandelbrot, x_space, y_space, resolution, max_iterations)
+        t, _ = benchmark(compute_mandelbrot_vectorized, x_space, y_space, resolution, max_iterations)
         runtimes.append(t)
 
     #plot runtime against resolution
