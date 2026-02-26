@@ -4,6 +4,7 @@ Author : Christian Mariager
 Course : Numerical Scientific Computing 2026
 """
 
+from line_profiler import profile
 import statistics
 import numpy as np
 import time
@@ -21,6 +22,7 @@ def benchmark ( func , * args , n_runs =3) :
     print(f" Median : {median_t:.4f}s " f"( min ={ min( times ):.4f}, max ={ max( times ):.4f})")
     return median_t, result
 
+@profile
 def mandelbrot_point(complex_input: complex, max_iterations: int = 1000):
     """
     Description:
@@ -39,6 +41,7 @@ def mandelbrot_point(complex_input: complex, max_iterations: int = 1000):
     # Return the max iteartion count if the point does not escape
     return max_iterations
 
+@profile
 def compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations):
     """
     x_space: Describes the range of the real axis (e.g., [-2.0, 1.0])
@@ -91,14 +94,14 @@ if __name__ == "__main__":
     resolution = 1024 # Number of points along each axis
     max_iterations = 100 # Maximum number of iterations to determine if a point escapes
 
-    test_number = 1.5 + -0.2j # Example complex number for testing
-    print(f"Iteration count for {test_number}: {mandelbrot_point(test_number, max_iterations)}")
+    #test_number = 1.5 + -0.2j # Example complex number for testing
+    #print(f"Iteration count for {test_number}: {mandelbrot_point(test_number, max_iterations)}")
 
-    start_time = time.time()
+    #start_time = time.time()
     iteration_counts = compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations)
-    print(f"Iteration counts array {iteration_counts}")
-    end_time = time.time()
-    print(f"Computation time: {end_time - start_time} seconds")
+    #print(f"Iteration counts array {iteration_counts}")
+    #end_time = time.time()
+    #print(f"Computation time: {end_time - start_time} seconds")
 
     # Visualize the Mandelbrot set
-    visualize_mandelbrot(iteration_counts, x_space, y_space)
+    #visualize_mandelbrot(iteration_counts, x_space, y_space)
