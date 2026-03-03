@@ -1,3 +1,19 @@
+# General Information
+**Hardware Specs:**
+- Processor	11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz, 3110 Mhz, 4 Core(s), 8 Logical Processor(s)
+- 16.0 GB Ram
+- Windows 11
+
+**Library Versions:**
+- numpy=2.3.5
+- numba=0.63.1
+- Other specifics can be found in "environment.yml"
+
+**Measurement Methodology:**
+- Warmup: A single warmup run was used in the numba implementation
+- Trials: Manual time captures (the ones excluding profiling) was captured over 3 trials.
+
+
 # cProfile Measurements (Milestone 1)
 ## cProfile Naive Solution
 ```bash
@@ -136,15 +152,23 @@ According to line_profiler, 96.4% of the total time is spent in the inner loop '
 - 'for iteration in range(max_iterations):' takes up 19.1% of the time.
 
 **Based on your profiling results: why is NumPy faster than the naive Python?**\
-The NumPy version is specifically faster because it takes a vectorized approach. 
----- Help
+NumPy is faster because it avoids executing millions of operations inside Python loops. In the naive version, each pixel requires a Python function call and many interpreted operations, which introduces significant overhead. Profiling shows that most of the runtime is spent inside the inner loop and repeated calls to abs() and complex arithmetic. NumPy moves these computations into optimized C code, where loops run at compiled speed instead of interpreter speed. This drastically reduces overhead and improves performance.
 
 **What would you need to change to make the naive version faster?**\
-You would need to change the inner loop function to run more optimized. As it dominates ~96% of the naive run-time, specifically the threshold check and calculation of the next complex number in the iteration.
----- Help
+To make the naive version faster, the inner loop must be optimized since it dominates nearly all runtime. The main improvement would be to reduce Python overhead by avoiding repeated function calls and complex number operations. Replacing complex numbers with separate real and imaginary variables and using zr*zr + zi*zi > 4 instead of abs() would also improve performance.
 
-# Numba njit (Milestone 3)
-- Naive approach: 4.0889 seconds : 0 Speedup
+# Numba njit - Speedup Table (Milestone 3)
+**Speedups compared to Naive approach**:
+- Naive approach: 4.0889 seconds : 1 Speedup
 - NumPy/vectorized: 0.9811 seconds : 4.168 Speedup
-- Numba njit hybrid: 0.428 seconds : 2.29 Speedup
-- Numba njit fully: 0.062 seconds : 15.8 Speedup
+- Numba njit hybrid: 0.428 seconds : 9.55 Speedup
+- Numba njit fully: 0.062 seconds : 65.95 Speedup
+
+# Data Type Optimization (Milestone 4)
+```bash
+Running with precision: <class 'numpy.float32'>
+Execution time: 0.071 seconds
+Running with precision: <class 'numpy.float64'>
+Execution time: 0.311 seconds
+```
+Inspecting the images, it can be seen that there is barely a difference between the quality. Because of this, it would make most sense to run a lower precision, e.g., float32, as it drastically improve computation time while barely sacrificing quality.
