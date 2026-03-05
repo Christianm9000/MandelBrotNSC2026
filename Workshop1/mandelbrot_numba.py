@@ -29,7 +29,7 @@ def mandelbrot_point(complex_input: complex, max_iterations: int = 1000) -> int:
     # Return the max iteartion count if the point does not escape
     return max_iterations
 
-@njit
+@njit(parallel=True, fastmath=True)
 def compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations, prec_type):
     """
     x_space: Describes the range of the real axis (e.g., [-2.0, 1.0])
@@ -60,6 +60,7 @@ def compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations, prec_
             iteration_counts[i, j] = iteration_count
 
     return iteration_counts
+
 
 def visualize_mandelbrot_side_by_side(iteration_counts: list[np.ndarray], x_space, y_space):
     """
