@@ -5,12 +5,12 @@ Course : Numerical Scientific Computing 2026
 """
 
 import numpy as np
-from numba import njit
+from numba import njit, prange
 import time
 import matplotlib.pyplot as plt
 
 
-@njit
+@njit()
 def mandelbrot_point(complex_input: complex, max_iterations: int = 1000) -> int:
     """
     Description:
@@ -21,7 +21,7 @@ def mandelbrot_point(complex_input: complex, max_iterations: int = 1000) -> int:
     # Initialize z to 0
     z_0 = 0 + 0j
 
-    for iteration in range(max_iterations):
+    for iteration in prange(max_iterations):
         if z_0.real**2 + z_0.imag**2 > 4: # Check if the magnitude of z exceeds 2
             return iteration
         z_0 = z_0**2 + complex_input
@@ -50,9 +50,9 @@ def compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations, prec_
     # Initialize a 2D array to store the iteration counts
     iteration_counts = np.zeros((resolution, resolution), dtype=np.int32)
 
-    for i in range(resolution):
+    for i in prange(resolution):
         yi = y[i]
-        for j in range(resolution):
+        for j in prange(resolution):
             complex_input = x[j] + 1j * yi
             iteration_count = mandelbrot_point(complex_input, max_iterations)
 
@@ -93,6 +93,10 @@ if __name__ == "__main__":
 
     for prec in [np.float32, np.float64]:
         print(f"Running with precision: {prec}")
+        if prec == np.float64:
+            # Warm up the JIT compiler for float64 precision
+            _ = compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations, prec_type=prec)
+
         start = time.perf_counter()
         iteration_counts = compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations, prec_type=prec)
         end = time.perf_counter()
