@@ -1,4 +1,4 @@
-## Parallellized Mandebrot Set Computation Times
+## Parallellized Mandebrot Set Computation Times (L04)
 ```bash
 | Workers | Time (s) | Speedup | Efficiency (%) |
 |---------|----------|---------|----------------|
@@ -12,7 +12,7 @@
 8 workers: 0.0328 s, speedup=2.17x, efficiency=27.2%
 ```
 
-## Chunk Sweeping Optimization
+## Chunk Sweeping Optimization (L05)
 **8 Workers:**
 ```bash
 Serial: 0.0620 s
@@ -40,3 +40,23 @@ Serial: 0.0619 s
   56 chunks ( 8x workers): 0.0152 s, speedup=4.07x, efficiency=58.1%, LIF=0.722
  112 chunks (16x workers): 0.0159 s, speedup=3.89x, efficiency=55.5%, LIF=0.801
 ```
+
+## Full Performance Comparison at 1024x1024, max_iter=100
+```bash
+| Implementation | Time (s) | Speedup |
+|----------------|----------|---------|
+Naive Python     4.0889 s,   speedup=1.00x
+Numpy Vectorized 0.9811 s,   speedup=4.17x
+Numba (@njit)    0.0620 s,   speedup=65.95x
+Parallel         0.0145 s,   speedup=281.99x
+```
+
+## Discussion
+**Speedup vs core-count**\
+Using Amdahl back-solving at p=7, the original worker-only version with a speedup of 2.29x gives an implied serial fraction of s=0.343. With chunking enabled at 7 workers and 42 chunks, the speedup increases to 4.15x, which lowers the implied serial fraction to s=0.114. This indicated that the chunking strategy substantially improved load balance and reduced the apparent serial/overhead component of the parallel execution.
+
+**What settings give the best time:**\
+I tested both 7 and 8 workers, and found that 7 workers with 42 chunks (6x workers) gave the best performance in terms of efficiency and LIF, while 8 workers with 48 chunks (6x workers) performed the fastest, with a speedup of 4.29x and efficiency of 53.6%, and a LiF of 0.866.
+
+**Is parallelisation worth it on your hardware:**\
+Yes, the parallelized version with optimized chunking, njit compilation, and multiprocessing achieved a significant speedup of up to 281.99x compared to the naive Python implementation, making it well worth the effort on my hardware. This is also compared to the Numba-optimized single-threaded version, which was already much faster than the naive implementation, but the parallelized version still provided a substantial improvement.
