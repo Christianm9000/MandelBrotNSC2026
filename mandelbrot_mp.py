@@ -89,22 +89,62 @@ if __name__ == "__main__":
     y_min, y_max = -1.5, 1.5
     max_iter = 100
 
-    mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)  # main-process warmup
+    n_workers = 8
 
+    # -----------------------------
+    # 1) Main-process JIT warmup
+    # -----------------------------
+    mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
+
+    # -----------------------------
+    # 2) Serial baseline (median of 3)
+    # -----------------------------
     serial_times = []
     for _ in range(3):
         t0 = time.perf_counter()
         mandelbrot_serial(N, x_min, x_max, y_min, y_max, max_iter)
         serial_times.append(time.perf_counter() - t0)
+
     t_serial = statistics.median(serial_times)
+    print(f"Serial baseline: {t_serial:.4f} s\n")
 
-    print(f"Serial median time: {t_serial:.4f} s")
+    # -----------------------------
+    # 3) Sweep chunk counts
+    # -----------------------------
+    chunk_multipliers = [1, 2, 4, 6, 8, 16]
+    best_result = None
 
-    for n_workers in range(1, os.cpu_count() + 1):
+    for mult in chunk_multipliers:
+        n_chunks = mult * n_workers
+
+        # fresh pool per configuration so warmup is excluded from timing
         with mp.Pool(processes=n_workers) as pool:
-            #warm up workers once
-            mandelbrot_parallel(
-                N, x_min, x_max, y_min, y_max,
-                max_iter=max_iter, n_workers=n_workers,
-                n_chunks=n_workers, pool=pool
-            )
+            # untimed warmup in worker processes
+            tiny = [(0, min(8, N), N, x_min, x_max, y_min, y_max, max_iter)]
+            pool.map(_worker, tiny)
+
+            times = []
+            for _ in range(3):
+                t0 = time.perf_counter()
+                result = mandelbrot_parallel(
+                    N, x_min, x_max, y_min, y_max,
+                    max_iter=max_iter,
+                    n_workers=n_workers,
+                    n_chunks=n_chunks,
+                    pool=pool
+                )
+                times.append(time.perf_counter() - t0)
+
+            t_par = statistics.median(times)
+
+        speedup = t_serial / t_par
+        efficiency = speedup / n_workers
+        lif = n_workers * t_par / t_serial - 1
+
+        print(
+            f"{n_chunks:4d} chunks ({mult:2d}x # workers): "
+            f"{t_par:.4f} s, "
+            f"speedup={speedup:.2f}x, "
+            f"efficiency={efficiency * 100:.1f}%, "
+            f"LIF={lif:.3f}"
+        )
