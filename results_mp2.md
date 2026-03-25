@@ -48,9 +48,9 @@ Serial: 0.0619 s
 Naive Python     4.0889 s,   speedup=1.00x
 Numpy Vectorized 0.9811 s,   speedup=4.17x
 Numba (@njit)    0.0620 s,   speedup=65.95x
-Parallel         0.0145 s,   speedup=281.99x
+Multiprocessing  0.0145 s,   speedup=281.99x
 Dask(6 workers, 32 chunks) 0.1276 s, speedup=32.04x
-Dask(6 workers, )
+Dask(6 workers, 12 chunks) 0.0780 s, speedup=52.42x
 ```
 
 ## Discussion
@@ -63,7 +63,7 @@ I tested both 7 and 8 workers, and found that 7 workers with 42 chunks (6x worke
 **Is parallelisation worth it on your hardware:**\
 Yes, the parallelized version with optimized chunking, njit compilation, and multiprocessing achieved a significant speedup of up to 281.99x compared to the naive Python implementation, making it well worth the effort on my hardware. This is also compared to the Numba-optimized single-threaded version, which was already much faster than the naive implementation, but the parallelized version still provided a substantial improvement.
 
-## L06: Dask Performance
+## L06: Dask Best Performance
 
 ```bash
 Serial baseline T1: 0.0670 s
@@ -83,3 +83,10 @@ t_min            = 0.0780 s
 LIF_min          = 5.982
 checksum(best)   = 22018211
 ```
+
+# Discussion
+**How does Dask local compare to multiprocessing at the same worker count?**\
+Dask is significantly slower than multiprocessing. This is indicated by the best Dask time of 0.0780 s with 12 chunks, which is still much slower than the multiprocessing time of 0.0145 s. The overhead of Dask's task scheduling and communication between workers likely contributes to this performance gap, especially for a workload that may not be large enough to overrun these costs.
+
+**What does the overhead difference tell you about when to choose each tool?**\
+The overhead difference suggests that multiprocessing is more suitable for workloads that require low-latency execution and have a smaller number of tasks, while Dask may be more appropriate for larger, more complex workloads that can benefit from its dynamic task scheduling and distributed computing capabilities. For smaller tasks or those with tight performance requirements, multiprocessing may be the better choice due to its lower overhead.
