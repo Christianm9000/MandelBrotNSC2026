@@ -50,7 +50,7 @@ Numpy Vectorized 0.9811 s,   speedup=4.17x
 Numba (@njit)    0.0620 s,   speedup=65.95x
 Parallel         0.0145 s,   speedup=281.99x
 Dask(6 workers, 32 chunks) 0.1276 s, speedup=32.04x
-Dask
+Dask(6 workers, )
 ```
 
 ## Discussion
@@ -62,3 +62,24 @@ I tested both 7 and 8 workers, and found that 7 workers with 42 chunks (6x worke
 
 **Is parallelisation worth it on your hardware:**\
 Yes, the parallelized version with optimized chunking, njit compilation, and multiprocessing achieved a significant speedup of up to 281.99x compared to the naive Python implementation, making it well worth the effort on my hardware. This is also compared to the Numba-optimized single-threaded version, which was already much faster than the naive implementation, but the parallelized version still provided a substantial improvement.
+
+## L06: Dask Performance
+
+```bash
+Serial baseline T1: 0.0670 s
+
+n_chunks | time (s) | vs 1x | speedup | LIF
+----------------------------------------------
+       6 |   0.1052 |  1.57x |    0.64x | 8.423
+      12 |   0.0780 |  1.16x |    0.86x | 5.982
+      24 |   0.0885 |  1.32x |    0.76x | 6.926
+      36 |   0.1319 |  1.97x |    0.51x | 10.819
+      48 |   0.1564 |  2.33x |    0.43x | 13.008
+      96 |   0.2489 |  3.72x |    0.27x | 21.293
+
+Record:
+n_chunks_optimal = 12
+t_min            = 0.0780 s
+LIF_min          = 5.982
+checksum(best)   = 22018211
+```
