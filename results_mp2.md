@@ -49,6 +49,8 @@ Naive Python     4.0889 s,   speedup=1.00x
 Numpy Vectorized 0.9811 s,   speedup=4.17x
 Numba (@njit)    0.0620 s,   speedup=65.95x
 Parallel         0.0145 s,   speedup=281.99x
+Dask(6 workers, 32 chunks) 0.1276 s, speedup=32.04x
+Dask
 ```
 
 ## Discussion
