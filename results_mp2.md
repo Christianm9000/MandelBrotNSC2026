@@ -67,6 +67,7 @@ Yes, the parallelized version with optimized chunking, njit compilation, and mul
 
 ```bash
 Serial baseline T1: 0.0670 s
+6 workers:
 
 n_chunks | time (s) | vs 1x | speedup | LIF
 ----------------------------------------------
