@@ -1,4 +1,4 @@
-## Parallellized Mandebrot Set Computation Times (L04)
+## Parallellized Mandebrot Set Computation Times (L04) Multiprocessing
 ```bash
 | Workers | Time (s) | Speedup | Efficiency (%) |
 |---------|----------|---------|----------------|
@@ -12,7 +12,7 @@
 8 workers: 0.0328 s, speedup=2.17x, efficiency=27.2%
 ```
 
-## Chunk Sweeping Optimization (L05)
+## Chunk Sweeping Optimization (L05) Multiprocessing
 **8 Workers:**
 ```bash
 Serial: 0.0620 s
@@ -95,6 +95,7 @@ The overhead difference suggests that multiprocessing is more suitable for workl
 ## L07: Dask Distributed Performance
 First 2 workers, then 4 workers both at 1024x1024 resolution, max_iter=100
 ```bash
+2 workers at 1024x1024 resolution, max_iter=100
 Serial baseline T1: 0.0759 s
 
 n_chunks | time (s) | vs 1x | speedup | LIF
@@ -112,7 +113,7 @@ t_min            = 0.1098 s
 LIF_min          = 7.676
 
 ---------------------------------------------
-
+4 workers at 1024x1024 resolution, max_iter=100
 Serial baseline T1: 0.0755 s
 
 n_chunks | time (s) | vs 1x | speedup | LIF
@@ -221,3 +222,33 @@ n_chunks_optimal = 32
 t_min            = 0.5537 s
 LIF_min          = 0.830
 ```
+
+Speedup Table at 1024x1024 resolution, max_iter=100
+```bash
+| Implementation | Time (s) | Speedup |
+|----------------|----------|---------|
+Naive Python     4.0889 s,   speedup=1.00x
+Numpy Vectorized 0.9811 s,   speedup=4.17x
+Numba (@njit)    0.0620 s,   speedup=65.95x
+Multiprocessing  0.0145 s,   speedup=281.99x
+Dask(6 workers, 32 chunks) 0.1276 s, speedup=32.04x
+Dask(6 workers, 12 chunks) 0.0780 s, speedup=52.42x
+Dask Distributed (4 workers, 12 chunks) 0.0765 s, speedup=53.78x
+```
+
+The fact that Dask Distributed with 4 workers and 12 chunks achieves similar/slightly better performance than Dask local with 6 workers and 12 chunks suggests that the distributed machines may have better hardware capabilities (e.g. faster CPUs, more memory) that help offset the overhead of distributed execution. However, the performance is still much worse than multiprocessing, indicating that the overhead of Dask's distributed execution model is likely still a significant factor in this workload. It is also important to remember that this is at 1024x1024 resolution, meaning that the workload may not be large enough to fully benefit from Dask's distributed capabilities, and the overhead may dominate the execution time. The Dask local implementation is with 6 workers on a 4 physical core and 8 logical core machine, which could be the reason 6 local workers performs worse than 4 distributed workers, as the local machine may be oversubscribed with 6 workers, leading to increased contention and overhead, while the distributed setup had 1 worker per physical core, allowing for better performance.
+
+## L07 Locked Chunk Count different workers, 4096x4096 resolution, max_iter=100
+```bash
+
+Serial baseline: 1.2312s
+
+| Chunks | Workers | Time (s) | Speedup |
+|--------|---------|----------|---------|
+12 chunks | 1 workers | 1.6306 s, speedup=0.75x
+12 chunks | 2 workers | 0.9285 s, speedup=1.33x
+12 chunks | 3 workers | 0.7495 s, speedup=1.64x
+12 chunks | 4 workers | 0.6354 s, speedup=1.94x
+```
+
+I chose 12 chunks for this experiment because it was the optimal chunk count for 4 workers at 1024x1024 resolution, and I wanted to see how the performance scaled with different worker counts at the larger 4096x4096 resolution. The results show that as the number of workers increases, the time decreases and the speedup increases, which is expected. However, the speedup is not linear with respect to the number of workers, indicating that there are diminishing returns as more workers are added, due to overhead and contention.
