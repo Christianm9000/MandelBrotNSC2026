@@ -99,13 +99,10 @@ if __name__ == "__main__":
     t_serial = timed_serial_baseline(N, x_min, x_max, y_min, y_max, max_iter)
     print(f"Serial baseline T1: {t_serial:.4f} s\n")
 
-    cluster = LocalCluster(
-        n_workers=n_workers,
-        threads_per_worker=1,
-        processes=True,
-        dashboard_address=None,
-    )
-    client = Client(cluster)
+    #cluster = LocalCluster(n_workers=n_workers, threads_per_worker=1, processes=True, dashboard_address=None)
+    #client = Client(cluster)
+
+    client = Client("tcp://10.92.0.156:8786")
 
     try:
         # Warm up Numba JIT in all worker processes before the sweep.
@@ -190,4 +187,4 @@ if __name__ == "__main__":
         print(f"Saved plot to {plot_path}")
     finally:
         client.close()
-        cluster.close()
+        #cluster.close()
