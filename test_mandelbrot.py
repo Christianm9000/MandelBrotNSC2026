@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
 
-import mandelbrot_mp
-import mandelbrot_naive
-import mandelbrot_numba
+import Workshop2.mandelbrot_mp as mandelbrot_mp
+import Workshop1.mandelbrot_naive as mandelbrot_naive
+import Workshop1.mandelbrot_numba as mandelbrot_numba
 
 
 KNOWN_POINT_CASES = [
