@@ -80,5 +80,25 @@ TOTAL                        261    127    51%
 GPU 1024x1024: 3.7 ms
 GPU 2048x2048: 6.3 ms
 ```
-
 A corresponding mandelbrot_gpu_m1.png image is saved.
+
+
+
+
+## L10: Final Benchmarking Results
+**Benchmarking Results**
+```bash
+Speedup Table at 1024x1024 resolution, max_iter=100
+
+| Implementation | Time (s) | Speedup |
+|----------------|----------|---------|
+Naive Python     4.0889 s,   speedup=1.00x
+Numpy Vectorized 0.9811 s,   speedup=4.17x
+Numba (@njit)    0.0620 s,   speedup=65.95x
+Multiprocessing  0.0145 s,   speedup=281.99x
+Dask(6 workers, 32 chunks) 0.1276 s, speedup=32.04x
+Dask(6 workers, 12 chunks) 0.0780 s, speedup=52.42x
+Dask Distributed (4 workers, 12 chunks) 0.0765 s, speedup=53.78x
+GPU F32(1024x1024) 0.0037 s,   speedup=1105.11x
+GPU F32(2048x2048) 0.0063 s,   speedup=649.03x
+```

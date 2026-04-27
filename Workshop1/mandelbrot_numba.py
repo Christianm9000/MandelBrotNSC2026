@@ -84,9 +84,9 @@ def visualize_mandelbrot_side_by_side(iteration_counts: list[np.ndarray], x_spac
 if __name__ == "__main__":
     x_space = [-2.0, 1.0] # Real axis range
     y_space = [-1.5, 1.5] # Imaginary axis range
-    resolution = 1024 # Number of points along each axis
+    resolution = 2048 # Number of points along each axis
     max_iterations = 100 # Maximum number of iterations to determine if a point escapes
-    prec = np.float32
+    prec = np.float64
 
     _ = compute_mandelbrot_naive(x_space, y_space, resolution, max_iterations, prec_type=prec)
     

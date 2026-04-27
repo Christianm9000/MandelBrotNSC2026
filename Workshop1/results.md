@@ -166,9 +166,18 @@ To make the naive version faster, the inner loop must be optimized since it domi
 
 # Data Type Optimization (Milestone 4)
 ```bash
+Resolution: 1024x1024, max_iter=100
 Running with precision: <class 'numpy.float32'>
 Execution time: 0.071 seconds
 Running with precision: <class 'numpy.float64'>
 Execution time: 0.311 seconds
 ```
+```bash
+Resolution: 2048x2048, max_iter=100
+Running with precision: <class 'numpy.float32'>
+Execution time: 0.285 seconds
+Running with precision: <class 'numpy.float64'>
+Execution time: 1.234 seconds
+```
+
 Inspecting the images, it can be seen that there is barely a difference between the quality. Because of this, it would make most sense to run a lower precision, e.g., float32, as it drastically improve computation time while barely sacrificing quality.
