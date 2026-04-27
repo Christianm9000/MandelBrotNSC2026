@@ -82,7 +82,21 @@ GPU 2048x2048: 6.3 ms
 ```
 A corresponding mandelbrot_gpu_m1.png image is saved.
 
+## L10: M2: GPU f32 vs numba f64 Performance Comparison
+**Timing Results**
+```bash
+GPU f32 1024x1024: 0.8 ms median over 3 runs
+Numba f64 1024x1024: 311.0 ms
+Speedup vs Numba f64 at N=1024: 367.26x
+GPU f32 2048x2048: 2.6 ms median over 3 runs
+Numba f64 2048x2048: 1234.0 ms
+Speedup vs Numba f64 at N=2048: 477.06x
 
+N           GPU f32 [s]   Numba f64 [s]    Numba f64 / GPU f32  Numba f32 [s]
+------------------------------------------------------------------------------
+1024           0.000847        0.311000                367.26x       0.071000
+2048           0.002587        1.234000                477.06x       0.285000
+```
 
 
 ## L10: Final Benchmarking Results
