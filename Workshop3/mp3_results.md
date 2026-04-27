@@ -73,3 +73,12 @@ test_mandelbrot.py            34      0   100%
 TOTAL                        261    127    51%
 ==================================================================== 11 passed in 8.10s =================================================================
 ```
+
+## L10: M1: Mandelbrot GPU Implementation
+**Timing Results**
+```bash
+GPU 1024x1024: 3.7 ms
+GPU 2048x2048: 6.3 ms
+```
+
+A corresponding mandelbrot_gpu_m1.png image is saved.
