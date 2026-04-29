@@ -1,0 +1,253 @@
+2026-04-27 12c3d8d Refactored repository
+
+ .../1024mandelbrot_gpu_m1.png                       | Bin
+ .../ImplementationsBarChart.png                     | Bin
+ basic_test.py => Workshop3/basic_test.py            |   0
+ mandelbrot_gpu.py => Workshop3/mandelbrot_gpu.py    |   0
+ .../mandelbrot_gpu_f32_vs_numba_f64.png             | Bin
+ .../mandelbrot_gpu_m2.py                            |   0
+ .../mandelbrot_gpu_vs_numba_fp64.py                 |   0
+ mp3_bar_chart.py => Workshop3/mp3_bar_chart.py      |   0
+ conftest.py                                         |  20 --------------------
+ 9 files changed, 20 deletions(-)
+2026-04-27 32aba2b L10 MP3 M3: Added bar chart plotter and bart chart image. The previous implementation made on desktop did not run on laptop at f64 wasn't supported. So a script comparing f32 gpu timings to f64 numba was made instead. Plot and results are added.
+
+ ImplementationsBarChart.png         | Bin 0 -> 26664 bytes
+ Workshop3/mp3_results.md            |  16 +++-
+ mandelbrot_gpu_f32_vs_numba_f64.png | Bin 0 -> 30460 bytes
+ mandelbrot_gpu_vs_numba_fp64.py     | 158 ++++++++++++++++++++++++++++++++++++
+ mp3_bar_chart.py                    |  14 ++++
+ 5 files changed, 187 insertions(+), 1 deletion(-)
+2026-04-27 a558ba6 L10 MP3 M2: Created script to compare f32 with f64 precision. Recorded f32 1024, and 2048
+
+ Workshop1/mandelbrot_numba.py |   4 +-
+ Workshop1/results.md          |   9 ++
+ Workshop3/mp3_results.md      |  22 ++++-
+ mandelbrot_gpu_m2.py          | 213 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 245 insertions(+), 3 deletions(-)
+2026-04-27 9205a1a L10 MP3 M1: Implemented opencl version of mandelbrot. Tested 1024 vs 2048 iterations and logged results. Added corresponding mandelbrot image for 1024.
+
+ 1024mandelbrot_gpu_m1.png                          | Bin 0 -> 71087 bytes
+ .../mandelbrot_numba_m2.py                         |   0
+ Workshop3/mp3_results.md                           |  11 ++-
+ test_mandelbrot.py => Workshop3/test_mandelbrot.py |   0
+ basic_test.py                                      |  78 +++++++++++++++++++
+ mandelbrot_gpu.py                                  |  86 +++++++++++++++++++++
+ 6 files changed, 174 insertions(+), 1 deletion(-)
+2026-04-22 3801ed2 L09 MP3 M2: Cleaned repository. Redid mandelbrot_numba in a copied file to pass ruff check.
+
+ .../mandelbrot_sensitivity_map.py                  |   0
+ mandelbrot_td.py => Workshop3/mandelbrot_td.py     |   0
+ .../mp3m1_escape_iteration.png                     | Bin
+ .../mp3m1_first_divergence_iteration.png           | Bin
+ .../mp3m2_escape_count_map.png                     | Bin
+ .../mp3m2_sensitivity_map.png                      | Bin
+ conftest.py                                        |  20 +++
+ mandelbrot_numba_m2.py                             | 167 +++++++++++++++++++++
+ mp3_results.md                                     |  10 --
+ test_mandelbrot.py                                 |   6 +-
+ 10 files changed, 190 insertions(+), 13 deletions(-)
+2026-04-22 828774a Created test_mandelbrot.py to run: - known point values on naive and numba - grid matching on naive and numba - serial matching parallel in mandelbrot_mp - if build_chunks in mandelbrot_mp covers all rows once.
+
+ Workshop3/mp3_results.md | 75 ++++++++++++++++++++++++++++++++++++++++++++++++
+ test_mandelbrot.py       | 72 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 147 insertions(+)
+2026-04-22 6876275 MP3M2: Added sensitivity map script and corresponding results of escape count as well as the sensitivity map.
+
+ mandelbrot_sensitivity_map.py | 108 ++++++++++++++++++++++++++++++++++++++++++
+ mp3_results.md                |   1 +
+ mp3m2_escape_count_map.png    | Bin 0 -> 49973 bytes
+ mp3m2_sensitivity_map.png     | Bin 0 -> 46910 bytes
+ 4 files changed, 109 insertions(+)
+2026-04-21 6d33211 MP3 M1: Added Trajectory divergence map and code. Saved both a first escape iteration map as well as a first divergence map. Created a new results .md file to keep track of progress.
+
+ mandelbrot_td.py                     | 120 +++++++++++++++++++++++++++++++++++
+ mp3_results.md                       |   9 +++
+ mp3m1_escape_iteration.png           | Bin 0 -> 49973 bytes
+ mp3m1_first_divergence_iteration.png | Bin 0 -> 84480 bytes
+ 4 files changed, 129 insertions(+)
+2026-04-21 2060274 Cleaned repo, and moved Distributed computing part into its own folder.
+
+ Workshop2/Mandelbrot MP2.pdf                       | Bin 0 -> 222956 bytes
+ .../dask_chunk_sweep.png                           | Bin
+ ...dask_chunk_sweep_distributed_4_workers_4096.png | Bin
+ Workshop2/git_log.txt                              | 173 +++++++++++++++++++++
+ mandelbrot_dask.py => Workshop2/mandelbrot_dask.py |   0
+ .../mandelbrot_dask_distributed.py                 |   0
+ mandelbrot_mp.py => Workshop2/mandelbrot_mp.py     |   0
+ results_mp2.md => Workshop2/results_mp2.md         |   0
+ test_dask.py => Workshop2/test_dask.py             |   0
+ 9 files changed, 173 insertions(+)
+2026-04-05 9dc2329 Refactored code and added final results to results_mp2.md
+
+ .../SavesAndImagesMP1}/Mandelbrot64v32zoom.png     | Bin
+ .../SavesAndImagesMP1}/Mandelbrot64vs32.png        | Bin
+ .../SavesAndImagesMP1}/mandelbrot_computation.png  | Bin
+ .../SavesAndImagesMP1}/mandelbrot_naive.py.lprof   | Bin
+ .../SavesAndImagesMP1}/naive_profile.prof          | Bin
+ .../SavesAndImagesMP1}/vectorized_profile.prof     | Bin
+ results_mp2.md                                     |  39 ++++++++++++++++++---
+ 7 files changed, 35 insertions(+), 4 deletions(-)
+2026-04-05 7f43aae L07: MP2 M1: Added Results to mp2.md
+
+ .../Mandelbrot64v32zoom.png                        | Bin
+ .../Mandelbrot64vs32.png                           | Bin
+ .../mandelbrot_computation.png                     | Bin
+ .../mandelbrot_naive.py.lprof                      | Bin
+ .../naive_profile.prof                             | Bin
+ .../vectorized_profile.prof                        | Bin
+ dask_chunk_sweep_distributed_4_workers_4096.png    | Bin 0 -> 47398 bytes
+ mandelbrot_dask.py                                 |  13 +-
+ mandelbrot_dask_distributed.py                     | 190 +++++++++++++++++++++
+ results_mp2.md                                     | 132 +++++++++++++-
+ 10 files changed, 329 insertions(+), 6 deletions(-)
+2026-04-03 534b0dd L07: Changed dask to run distributed instead of both hosting cluster and client
+
+ mandelbrot_dask.py | 13 +++++--------
+ results_mp2.md     |  1 +
+ 2 files changed, 6 insertions(+), 8 deletions(-)
+2026-03-25 5362d50 (L06) MP2 M3: Added results to .md and added results to performance tracker in Moodle.
+
+ results_mp2.md | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+2026-03-25 123cc63 (L06) MP2: Implemented chunk sweep and found 6 workers with 12 chunks to be best. Stored the results in results_mp2.md and a dask_chunk_sweep.pnh graph.
+
+ dask_chunk_sweep.png | Bin 0 -> 43501 bytes
+ mandelbrot_dask.py   | 167 +++++++++++++++++++++++++++++++++++++++++++++------
+ results_mp2.md       |  25 +++++++-
+ 3 files changed, 170 insertions(+), 22 deletions(-)
+2026-03-25 9130983 (L06) MP1: Implemented a new script which uses Dask instead of python multiprocessing.
+
+ mandelbrot_dask.py | 66 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ results_mp2.md     |  2 ++
+ test_dask.py       | 11 +++++++++
+ 3 files changed, 79 insertions(+)
+2026-03-18 4de0494 Added full performance comparison table for 1024 resolution and 100 iteration. Compared results of Amdahl's back-solve, which found that parallelization makes sense on this machine.
+
+ results_mp2.md | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
+2026-03-18 61144ff MP2 (L05) M2: Recorded chunk sweep optimization for 7 and 8 workers respectively.
+
+ mandelbrot_mp.py | 58 +++++++++++++++++++++++++++++++++++++++++++++++---------
+ results_mp2.md   | 29 ++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+), 9 deletions(-)
+2026-03-18 86ff980 MP2 (L05) M1: Added n_chunks and pool to the parallel mandelbrot. Refactored the function to either run with warmup or without.
+
+ mandelbrot_mp.py | 76 ++++++++++++++++++++------------------------------------
+ 1 file changed, 27 insertions(+), 49 deletions(-)
+2026-03-18 d11a0a8 MP2 M3: Recorded a speedup and efficiency table for 8 logical cores in results_mp2.md.
+
+ mandelbrot_mp.py | 120 ++++++++++++++++++++++++++++++++++++++-----------------
+ results_mp2.md   |  13 ++++++
+ 2 files changed, 96 insertions(+), 37 deletions(-)
+2026-03-05 d831421 MP2 M2: Implemented parallel mandelbrot. Timed execution shows slower parallel implementation
+
+ mandelbrot_mp.py | 44 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
+2026-03-05 aa7a0d4 MP1 M1: Refactored numba code into new structure for multiprocessing. Also cleanup in repo.
+
+ .../NSC2026 Workshop1.pdf                          | Bin
+ .../cprofile_analysis.py                           |   0
+ git_log.txt => Workshop1/git_log.txt               | Bin
+ .../mandelbrot_naive.py                            |   0
+ .../mandelbrot_numba.py                            |   3 +-
+ .../mandelbrot_vectorized.py                       |   0
+ .../memory_access(l02m3).py                        |   0
+ results.md => Workshop1/results.md                 |   0
+ test_script.py => Workshop1/test_script.py         |   0
+ mandelbrot_mp.py                                   |  52 +++++++++++++++++++++
+ 10 files changed, 54 insertions(+), 1 deletion(-)
+2026-03-05 f62df76 Folder cleanup
+
+ NSC2026 Workshop1.pdf                                  | Bin 0 -> 447715 bytes
+ .../Mandelbrot64v32zoom.png                            | Bin
+ .../Mandelbrot64vs32.png                               | Bin
+ .../mandelbrot_computation.png                         | Bin
+ .../mandelbrot_naive.py.lprof                          | Bin
+ .../naive_profile.prof                                 | Bin
+ .../vectorized_profile.prof                            | Bin
+ git_log.txt                                            | Bin 0 -> 8748 bytes
+ mandelbrot_numba.py                                    |  14 +++++++++-----
+ 9 files changed, 9 insertions(+), 5 deletions(-)
+2026-03-03 f70a1d3 Milestone 4: Added final results. Tested dtype comparison between float32 and float64. Added visual images for quality comparison.
+
+ Mandelbrot64v32zoom.png | Bin 0 -> 51984 bytes
+ Mandelbrot64vs32.png    | Bin 0 -> 121688 bytes
+ mandelbrot_numba.py     |  46 +++++++++++++++++++++++++++++++++++++---------
+ results.md              |  40 ++++++++++++++++++++++++++++++++--------
+ 4 files changed, 69 insertions(+), 17 deletions(-)
+2026-02-26 b459830 Milestone 3: Added numba script which can run both fully and hybrid approach (outcomment outer njit). Added results to markdown file
+
+ mandelbrot_numba.py | 73 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ results.md          | 10 +++++---
+ 2 files changed, 80 insertions(+), 3 deletions(-)
+2026-02-26 f45da0f Milestone 2: Added results and questions to the markdown report. Ran line_profiler to inspect time spent on each line.
+
+ mandelbrot_naive.py       |  17 ++++---
+ mandelbrot_naive.py.lprof | Bin 0 -> 383 bytes
+ results.md                | 125 ++++++++++++++++++++++++++++++++++++++++------
+ 3 files changed, 120 insertions(+), 22 deletions(-)
+2026-02-26 eeae8cc Session3 Milestone 1: Added cProfile script to measure naive and numpy implementations. Added a .md file to record results
+
+ cprofile_analysis.py     |  17 ++++++++++++++++
+ mandelbrot_naive.py      |   6 +++---
+ mandelbrot_vectorized.py |   4 ++--
+ naive_profile.prof       | Bin 0 -> 5054 bytes
+ results.md               |  51 +++++++++++++++++++++++++++++++++++++++++++++++
+ vectorized_profile.prof  | Bin 0 -> 5342 bytes
+ 6 files changed, 73 insertions(+), 5 deletions(-)
+2026-02-26 b7e8a4e Readded the naive implementation as a separate script
+
+ mandelbrot_naive.py                       | 104 ++++++++++++++++++++++++++++++
+ mandelbrot.py => mandelbrot_vectorized.py |   0
+ l02m3.py => memory_access(l02m3).py       |   0
+ 3 files changed, 104 insertions(+)
+2026-02-22 df52b33 Milestone 4: added mandelbrot scaling test function. Shows a non-linear performance scaling for increasing resolutions (higher = worse).
+
+ mandelbrot.py              |  30 ++++++++++++++++++++++++++++--
+ mandelbrot_computation.png | Bin 0 -> 30283 bytes
+ 2 files changed, 28 insertions(+), 2 deletions(-)
+2026-02-22 4195976 Milestone 3: Added script that tested memory access patterns. Row access is much faster for a contiguous array, while column access is much faster for the fortran contiguous array.
+
+ l02m3.py | 67 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+2026-02-19 e9bbe3e Milestone 2: Vectorized approach. Replaced loops with vectorized approach.
+
+ mandelbrot.py | 36 ++++++++----------------------------
+ 1 file changed, 8 insertions(+), 28 deletions(-)
+2026-02-19 7e1acf0 Session 2 Milestone 1: Already had meshgrid implemented.
+
+ mandelbrot.py | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
+2026-02-05 51fd358 Implemented visualization and fixed minor bug in missing passed variable.
+
+ mandelbrot.py | 34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
+2026-02-05 2257d1f Implemented compute_mandelbrot(), which iterates and computes n iterations for the defined input space and resolution
+
+ mandelbrot.py | 44 +++++++++++++++++++++++++++++++++++++++-----
+ notes.txt     |  5 -----
+ 2 files changed, 39 insertions(+), 10 deletions(-)
+2026-02-05 eeda532 Implemented mandelbrot_point function which outputs N iteration for a complex input
+
+ mandelbrot.py | 43 +++++++++++++++++++++++++++++++------------
+ notes.txt     |  5 +++++
+ 2 files changed, 36 insertions(+), 12 deletions(-)
+2026-02-05 93e7f2f Add another TODO comment
+
+ mandelbrot.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+2026-02-05 bfe67e7 readded .gitignore, test_script.py, and settings.
+
+ .gitignore            | 207 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ .vscode/settings.json |   3 +
+ test_script.py        |  14 ++++
+ 3 files changed, 224 insertions(+)
+2026-02-05 36e9dd1 Add mandelbrot skeleton
+
+ mandelbrot.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+2026-02-05 b2510b0 Add Python environment specification
+
+ environment.yml | Bin 0 -> 12506 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
